@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# https://github.com/mohsend/my-scripts
+# Script to connect to remote VPS over FTP and leech content
+# I use it to download videos I leeched on VPS to be downloaded over night
+
+# Set values to these variables:
+localdir='The local directory for downloads'
+vpsaddress='IPorURL/Dir'
+vpsuser='Your username on the remote machine'
+vpspass='Password for the username'
+
+cd $localdir
+todaydate=$(date +%F)
+mkdir "$todaydate"
+cd "$todaydate"
+
+# the * tells wget to download everything on that directory
+wget -c -r ftp://$vpsuser:$vpspass@$vpsaddress* 
+

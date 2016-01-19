@@ -1,0 +1,8 @@
+#! /usr/bin/env bash
+# makes valid HTML5 pages from Github flavored Markdown
+# Requires 'pandoc'
+# https://github.com/mohsend/my-scripts
+
+echo '<!DOCTYPE html><html><head><link rel="stylesheet" type="text/css" href="~/Templates/markdown.css"></head><body><article>' > $1.html
+pandoc -f markdown_github -t html5 $1 >>  $1.html 
+echo "</body></html></article>" >> $1.html

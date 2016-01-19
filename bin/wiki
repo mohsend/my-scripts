@@ -1,0 +1,34 @@
+#!/usr/bin/env php5
+
+<?php
+/* 
+ * Copied from here:
+ * http://stackoverflow.com/questions/8555320/is-there-a-clean-wikipedia-api-just-for-retrieve-content-summary
+ * CC BY-SA http://creativecommons.org/licenses/by-sa/3.0/
+ * By Alexandre Vaillancourt http://stackoverflow.com/users/637987/alexandre-vaillancourt
+*/ 
+
+// Gets the first Paragraph of wikipedia page for the query
+$query = urlencode($_SERVER['argv'][1]);
+// action=parse: get parsed text
+// page=Baseball: from the page Baseball
+// format=json: in json format
+// prop=text: send the text content of the article
+// section=0: top content of the page
+
+$url = "http://en.wikipedia.org/w/api.php?action=parse&page=${query}&format=json&prop=text&section=0";
+$c = file_get_contents($url);
+
+$json = json_decode($c);
+
+$content = $json->{'parse'}->{'text'}->{'*'}; // get the main text content of the query (it's parsed HTML)
+
+// pattern for first match of a paragraph
+$pattern = '#<p>(.*)</p>#Us'; // http://www.phpbuilder.com/board/showthread.php?t=10352690
+if(preg_match($pattern, $content, $matches))
+{
+    // print $matches[0]; // content of the first paragraph (including wrapping <p> tag)
+    print strip_tags($matches[1]); // Content of the first paragraph without the HTML tags.
+}
+echo "\n";
+?>
